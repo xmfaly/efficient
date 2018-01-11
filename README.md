@@ -19,6 +19,8 @@
 ![1](/doc/Screenshot_2018-01-11-11-01-25-98.png)
 ![1](/doc/Screenshot_2018-01-11-11-01-28-68.png)
 ![1](/doc/Screenshot_2018-01-11-11-01-43-82.png)
+### app下载
+[efficient.apk](/res/apk/efficient.apk)
 ### 取得成就
 第15届齐鲁软件大赛一等奖
 ### LICENSE
