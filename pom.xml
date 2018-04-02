@@ -22,6 +22,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
+		<docker.image.prefix>xmfaly</docker.image.prefix>
 	</properties>
 
 	<dependencies>
@@ -77,7 +78,6 @@
 			<scope>system</scope>
 			<systemPath>${project.basedir}/lib/aliyun-java-sdk-dysmsapi-1.0.0.jar</systemPath>
 		</dependency>
-
 	</dependencies>
 
 	<build>
@@ -87,7 +87,24 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 
+			<plugin>
+				<groupId>com.spotify</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<version>0.4.11</version>
+				<configuration>
+					<imageName>${docker.image.prefix}/${project.artifactId}</imageName>
+					<dockerDirectory>src/main/docker</dockerDirectory>
+					<resources>
+						<resource>
+							<targetPath>/</targetPath>
+							<directory>${project.build.directory}</directory>
+							<include>${project.build.finalName}.jar</include>
+						</resource>
+					</resources>
+				</configuration>
+			</plugin>
 		</plugins>
+
 		<resources>
 			<resource>
 				<directory>lib</directory>
@@ -96,7 +113,6 @@
 					<include>*.jar</include>
 				</includes>
 			</resource>
-
 		</resources>
 	</build>
 

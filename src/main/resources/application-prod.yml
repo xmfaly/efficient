@@ -16,7 +16,7 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQL5Dialect
 server:
-  port: 8082
+  port: 8080
 version:
   name: "0.1.0"
   code: 1
