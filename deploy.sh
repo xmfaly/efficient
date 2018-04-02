@@ -4,7 +4,7 @@
 #docker 用户名
 USER_NAME=xmfaly
 # 项目名称
-PROJ_NAME=efficent
+PROJ_NAME=effcient
 # 服务器用户名
 SERVER_NAME=root
 # 服务器地址
