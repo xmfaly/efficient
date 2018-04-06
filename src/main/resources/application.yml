@@ -1,3 +1,23 @@
 spring:
-  profiles:
-    active: prod
+  datasource:
+    url: jdbc:mysql://120.78.149.248:3306/effcient
+    username: root
+    password: xmfaly
+    test-while-idle: true
+    validation-query: SELECT 1
+    driver-class-name: com.mysql.jdbc.Driver
+  thymeleaf:
+    mode: LEGACYHTML5
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+      naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
+server:
+  port: 8080
+version:
+  name: "0.1.0"
+  code: 1
