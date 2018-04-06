@@ -22,7 +22,7 @@ docker rmi $USER_NAME/$PROJ_NAME
 git pull
 
 # 本地构件镜像
-./mvnw package -Dmaven.test.skip=true docker:build
+./mvnw package -DskipTests docker:build
 
 # 上传镜像到远程仓库
 docker push $USER_NAME/$PROJ_NAME

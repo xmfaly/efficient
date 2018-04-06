@@ -18,17 +18,6 @@ public class ScoreTest {
 
     @Test
     public void test() throws Exception {
-//        String szsdCookie = SzsdUtils.getSzsdCookie("1507020129","xmfly1314");
-//
-//        System.out.println(szsdCookie);
-//        String jwxtCookie = SzsdUtils.getJwxtCookie(szsdCookie);
-//
-//        System.out.println(jwxtCookie);
 
-       // List<JwxtScore> scores =  SzsdUtils.getScore();
-
-        User user = new User(new BCryptPasswordEncoder().encode("test"), "test", "110");
-
-        userRepository.save(user);
     }
 }

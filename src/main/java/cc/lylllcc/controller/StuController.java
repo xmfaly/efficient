@@ -1,5 +1,6 @@
 package cc.lylllcc.controller;
 import cc.lylllcc.service.MockService;
+import cc.lylllcc.service.XzsdService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,10 +13,13 @@ public class StuController {
     @Autowired
     private MockService mockService;
 
+    @Autowired
+    private XzsdService xzsdService;
+
 
     @GetMapping("/grade")
-    public Object grade(String username){
-        return mockService.mockgrade();
+    public Object grade(String username) throws Exception {
+        return xzsdService.getScore(username);
     }
 
     @GetMapping("/classroom")
