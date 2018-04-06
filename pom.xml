@@ -133,6 +133,11 @@
                             <directory>${project.build.directory}</directory>
                             <include>${project.build.finalName}.jar</include>
                         </resource>
+
+                        <resource>
+                            <directory>${project.basedir}/res</directory>
+                            <include>**/*</include>
+                        </resource>
                     </resources>
                 </configuration>
             </plugin>
@@ -152,7 +157,7 @@
             <resource>
                 <directory>src/main/resources</directory>
                 <includes>
-                    <include>**/*</include>
+                    <include>**/**</include>
                 </includes>
             </resource>
 

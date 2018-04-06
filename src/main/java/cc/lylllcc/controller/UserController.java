@@ -95,9 +95,9 @@ public class UserController {
                 user.setStudentId(studentId);
                 user.setIpassword(ipassword);
                 userRepository.save(user);
-                String url = server + "bind";
-                String param = "username=" + username + "&sid=" + studentId + "&spwd=" + ipassword;
-                requestService.get(url, param);
+//                String url = server + "bind";
+//                String param = "username=" + username + "&sid=" + studentId + "&spwd=" + ipassword;
+//                requestService.get(url, param);
                 return new JsonMes(0, "绑定成功");
             } catch (Exception ex) {
                 return new JsonMes(2, "未知错误");
@@ -135,14 +135,14 @@ public class UserController {
         }
         user.setRemind(remind);
         userRepository.save(user);
-        String url = server + "remind";
-        String param = "";
-        if (remind == true) {
-            param = "username=" + username + "&method=set";
-        } else {
-            param = "username=" + username + "&method=cancel";
-        }
-        requestService.get(url, param);
+//        String url = server + "remind";
+//        String param = "";
+//        if (remind == true) {
+//            param = "username=" + username + "&method=set";
+//        } else {
+//            param = "username=" + username + "&method=cancel";
+//        }
+//        requestService.get(url, param);
         return new JsonMes(1, "设置成功");
     }
 
