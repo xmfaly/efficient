@@ -41,6 +41,6 @@ docker rmi $USER_NAME/$PROJ_NAME
 docker pull $USER_NAME/$PROJ_NAME
 
 # 运行容器
-docker run -d --name=$PROJ_NAME -p $DEPLOY_PORT:8080 -v /root/effcient/:/app/ -t $USER_NAME/$PROJ_NAME
+docker run -d --name=$PROJ_NAME -p $DEPLOY_PORT:8080 -v /root/effcient/:/log/ -t $USER_NAME/$PROJ_NAME
 
 cmd
