@@ -80,5 +80,9 @@ public class XzsdService {
 
     }
 
+    public Object getClassRoom(){
+        return 1;
+    }
+
 
 }
