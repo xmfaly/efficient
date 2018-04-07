@@ -43,7 +43,7 @@ public class XzsdService {
             Map<String,Object> map = new HashMap<>();
             map.put("code",0);
             map.put("message","操作成功");
-            map.put("course",courseInfo);
+            map.put("data",courseInfo);
             return map;
         }catch (Exception e){
             return new JsonMes(3,"数字石大账号或密码错误");
@@ -72,7 +72,7 @@ public class XzsdService {
             Map<String,Object> map = new HashMap<>();
             map.put("code",0);
             map.put("message","操作成功");
-            map.put("score",scores);
+            map.put("data",scores);
             return map;
         }catch (Exception e){
             return new JsonMes(3,"数字石大账号或密码错误");
