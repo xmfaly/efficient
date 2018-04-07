@@ -8,7 +8,6 @@ import lombok.Data;
 @Data
 public class JwxtScore {
     private String score;
-    //private String detailUrl;
     private String courseTime;
     private String courseName;
     private String courseKind;

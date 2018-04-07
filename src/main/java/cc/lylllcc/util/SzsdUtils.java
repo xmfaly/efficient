@@ -233,108 +233,7 @@ public class SzsdUtils {
         return jwxtCookie;
     }
 
-    public static String getLibCookie(String szsdCookie) throws Exception {
-        URL url = new URL("https://i.upc.edu.cn/dcp/forward.action?path=dcp/core/appstore/menu/jsp/redirect&appid=1186&ac=1");
-        HttpsURLConnection
-                httpsURLConnection = (HttpsURLConnection) url.openConnection();
-        httpsURLConnection.setRequestMethod("GET");
-        httpsURLConnection.setInstanceFollowRedirects(false);
-        httpsURLConnection.setRequestProperty("Cookie", szsdCookie);
-        httpsURLConnection.setDoInput(true);
-        httpsURLConnection.connect();
-        String libURL = httpsURLConnection.getHeaderField("Location");
-        String temp2 = libURL.substring(0, libURL.indexOf(" "));
-        temp2 += "%20";
-        temp2 += libURL.substring(libURL.indexOf(" ") + 1, libURL.length());
-        httpsURLConnection.disconnect();
-        //获取图书馆Cookie
-        url = new URL(temp2);
-        HttpURLConnection
-                httpURLConnection = (HttpURLConnection) url.openConnection();
-        httpURLConnection.setRequestMethod("GET");
-        httpURLConnection.setInstanceFollowRedirects(false);
-        httpURLConnection.setDoInput(true);
-        httpURLConnection.connect();
-        String libCookie = httpURLConnection.getHeaderField("Set-Cookie");
-        libCookie = libCookie.substring(0, libCookie.indexOf(";"));
-        httpsURLConnection.disconnect();
-        httpURLConnection.disconnect();
 
-        return libCookie;
-    }
-
-    public static SzsdUserInfo getUserInfo(String szsdCookie) {
-        try {
-            URL url = new URL("https://i.upc.edu.cn/dcp/profile/profile.action");
-            HttpsURLConnection
-                    httpsURLConnection = (HttpsURLConnection) url.openConnection();
-            httpsURLConnection.setRequestMethod("POST");
-            httpsURLConnection.setUseCaches(false);
-            httpsURLConnection.setInstanceFollowRedirects(false);
-            httpsURLConnection.setRequestProperty("Cookie", szsdCookie);
-            httpsURLConnection.setRequestProperty("render", "json");
-            httpsURLConnection.setRequestProperty("clientType", "json");
-            httpsURLConnection.setRequestProperty("Content-Type", "application/json");
-            httpsURLConnection.setDoOutput(true);
-            httpsURLConnection.setDoInput(true);
-            httpsURLConnection.connect();
-            String content = "{\"map\":{\"method\":\"getInfo\",\"params\":null},\"javaClass\":\"java.util.HashMap\"}";
-            DataOutputStream dos = new DataOutputStream(httpsURLConnection.getOutputStream());
-            dos.writeBytes(content);
-            dos.flush();
-            dos.close();
-            StringBuilder stringBuilder = new StringBuilder();
-            InputStream inputStream = new BufferedInputStream(httpsURLConnection.getInputStream());
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
-            Scanner scanner = new Scanner(bufferedReader);
-            while (scanner.hasNextLine()) {
-                stringBuilder.append(scanner.nextLine()).append("\n");
-            }
-            inputStream.close();
-            httpsURLConnection.disconnect();
-            JSONObject userJson = JSON.parseObject(stringBuilder.toString());
-            JSONArray jsonArray = userJson.getJSONArray("list");
-            return JSON.parseObject(jsonArray.getJSONObject(0).get("map").toString(), SzsdUserInfo.class);
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    public static LibAndCard getLibAndCardInfo(String szsdCookie) {
-        try {
-            URL url = new URL("https://i.upc.edu.cn/dcp/sso/sso.action");
-            HttpsURLConnection
-                    httpsURLConnection = (HttpsURLConnection) url.openConnection();
-            httpsURLConnection.setRequestMethod("POST");
-            httpsURLConnection.setUseCaches(false);
-            httpsURLConnection.setInstanceFollowRedirects(false);
-            httpsURLConnection.setRequestProperty("Cookie", szsdCookie);
-            httpsURLConnection.setRequestProperty("render", "json");
-            httpsURLConnection.setRequestProperty("clientType", "json");
-            httpsURLConnection.setRequestProperty("Content-Type", "application/json");
-            httpsURLConnection.setDoOutput(true);
-            httpsURLConnection.setDoInput(true);
-            httpsURLConnection.connect();
-            String content = "{\"map\":{\"method\":\"getSsoDetailInfo\",\"params\":null},\"javaClass\":\"java.util.HashMap\"}";
-            DataOutputStream dos = new DataOutputStream(httpsURLConnection.getOutputStream());
-            dos.writeBytes(content);
-            dos.flush();
-            dos.close();
-            StringBuilder stringBuilder = new StringBuilder();
-            InputStream inputStream = new BufferedInputStream(httpsURLConnection.getInputStream());
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
-            Scanner scanner = new Scanner(bufferedReader);
-            while (scanner.hasNextLine()) {
-                stringBuilder.append(scanner.nextLine()).append("\n");
-            }
-            inputStream.close();
-            httpsURLConnection.disconnect();
-            return JSON.parseObject(JSON.parseObject(stringBuilder.toString()).getString("map"), LibAndCard.class);
-        } catch (Exception e) {
-            return null;
-        }
-
-    }
 
     public static List<JwxtScore> getScore(String kksj, String jwxtCookie) {
         try {
@@ -559,22 +458,25 @@ public class SzsdUtils {
                             System.arraycopy(strings, 1 + strings.length - strT.length, strT, 1, strT.length - 1);
                             strings = strT;
                         }
+
+
                         for (int k = 0; k < strings.length / 6; k++) {
                             JwxtCourse item = new JwxtCourse();
                             if (strings[k * 6].contains("英语")) {
-                                item.setCourseName(strings[k * 6] + " " + strings[k * 6 + 1]);
+                                item.setName(strings[k * 6] + " " + strings[k * 6 + 1]);
                             } else {
-                                item.setCourseName(strings[k * 6]);
+                                item.setName(strings[k * 6]);
                             }
-                            item.setTeacherName(strings[k * 6 + 2]);
-                            item.setClassRoom(strings[k * 6 + 4]);
-                            item.setBeginLesson(i * 2 - 1);
-                            item.setEndLesson(i * 2);
+                            item.setTeacher(strings[k * 6 + 2]);
+                            item.setClassroom(strings[k * 6 + 4]);
+                            item.setTimeStart(i * 2 - 1);
+                            item.setTimeEnd(i * 2);
                             if (j == 7) {
-                                item.setDay(0);
+                                item.setDayOfWeek(0);
                             } else {
-                                item.setDay(j);
+                                item.setDayOfWeek(j);
                             }
+
                             String lessonInfo = strings[k * 6 + 3];
                             String week = lessonInfo.substring(0, lessonInfo.indexOf("周"));
                             if (week.contains(",") && week.contains("-")) {
@@ -582,56 +484,64 @@ public class SzsdUtils {
                                 for (String str : weeks1) {
                                     if (str.contains("-")) {
                                         String[] weeks = str.split("[-]");
-                                        for (int x = Integer.parseInt(weeks[0]); x <= Integer.parseInt(weeks[1]); x++) {
-                                            item.addWeek(x);
-                                        }
+                                        item.setWeekStart(Integer.parseInt(weeks[0]));
+                                        item.setWeekEnd(Integer.parseInt(weeks[1]));
+                                        courseList.add(item);
+
                                     } else {
-                                        item.addWeek(Integer.parseInt(str));
+                                        item.setWeekStart(Integer.parseInt(str));
+                                        item.setWeekEnd(Integer.parseInt(str));
+                                        courseList.add(item);
+
                                     }
 
                                 }
-                                item.setCourseType(3);
                             } else if (week.contains(",")) {
                                 String[] weeks = week.split("[,]");
                                 for (String str : weeks) {
-                                    item.addWeek(Integer.parseInt(str));
+                                    item.setWeekStart(Integer.parseInt(str));
+                                    item.setWeekEnd(Integer.parseInt(str));
+                                    courseList.add(item);
                                 }
-                                item.setCourseType(2);
+
                             } else if (week.contains("-")) {
                                 if (week.contains("单")) {
                                     week = week.substring(0, week.indexOf("单"));
                                     String[] weeks = week.split("[-]");
                                     for (int x = Integer.parseInt(weeks[0]); x <= Integer.parseInt(weeks[1]); x++) {
                                         if (x % 2 == 1) {
-                                            item.addWeek(x);
+                                            item.setWeekStart(x);
+                                            item.setWeekEnd(x);
+                                            courseList.add(item);
                                         }
                                     }
-                                    item.setCourseType(1);
+
                                 } else if (week.contains("双")) {
                                     week = week.substring(0, week.indexOf("双"));
                                     String[] weeks = week.split("[-]");
                                     for (int x = Integer.parseInt(weeks[0]); x <= Integer.parseInt(weeks[1]); x++) {
                                         if (x % 2 == 0) {
-                                            item.addWeek(x);
+                                            item.setWeekStart(x);
+                                            item.setWeekEnd(x);
+                                            courseList.add(item);
                                         }
                                     }
-                                    item.setCourseType(1);
                                 } else {
                                     String[] weeks = week.split("[-]");
-                                    for (int x = Integer.parseInt(weeks[0]); x <= Integer.parseInt(weeks[1]); x++) {
-                                        item.addWeek(x);
-                                    }
-                                    item.setCourseType(1);
+                                    item.setWeekStart( Integer.parseInt(weeks[0]));
+                                    item.setWeekEnd(Integer.parseInt(weeks[1]));
+                                    courseList.add(item);
                                 }
 
                             } else if (week.contains("双")) {
-                                item.addWeek(Integer.parseInt(week.substring(0, 1)));
-                                item.setCourseType(2);
+                                item.setWeekStart(Integer.parseInt(week.substring(0, 1)));
+                                item.setWeekEnd(Integer.parseInt(week.substring(0, 1)));
+                                courseList.add(item);
                             } else {
-                                item.addWeek(Integer.parseInt(week));
-                                item.setCourseType(3);
+                                item.setWeekStart(Integer.parseInt(week));
+                                item.setWeekEnd(Integer.parseInt(week));
+                                courseList.add(item);
                             }
-                            courseList.add(item);
                         }
                     }
                 }
@@ -642,198 +552,6 @@ public class SzsdUtils {
             return null;
         }
     }
-
-    public static List<SzsdBook> getBorrowBookList(String libCookie) {
-        try {
-            //获取借阅列表
-            URL
-                    url = new URL("http://211.87.177.4/reader/book_lst.php");
-            HttpURLConnection
-                    httpURLConnection = (HttpURLConnection) url.openConnection();
-            httpURLConnection.setRequestMethod("GET");
-            httpURLConnection.setRequestProperty("Cookie", libCookie);
-            httpURLConnection.setInstanceFollowRedirects(false);
-            httpURLConnection.setDoInput(true);
-            httpURLConnection.connect();
-            InputStream
-                    instream = new BufferedInputStream(httpURLConnection.getInputStream());
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(instream, "UTF-8"));
-            Scanner scanner = new Scanner(bufferedReader);
-            StringBuilder stringBuilder = new StringBuilder();
-            while (scanner.hasNextLine()) {
-                stringBuilder.append(scanner.nextLine()).append("\n");
-            }
-            //关闭对象
-            httpURLConnection.disconnect();
-            instream.close();
-            bufferedReader.close();
-            scanner.close();
-            List<SzsdBook> bookInfoList = new ArrayList<>();
-            //解析列表
-            if (stringBuilder.toString().contains("记录为空")) {
-                return null;
-            } else {
-                Document doc = Jsoup.parse(stringBuilder.toString());
-                Elements elements = doc.getElementsByTag("tbody");
-                Element element = elements.get(0);
-                elements = element.getElementsByTag("tr");
-                for (int i = 1; i < elements.size(); i++) {
-                    element = elements.get(i);
-                    Elements elements1 = element.getElementsByTag("td");
-                    String str = elements1.get(1).text();
-                    String[] s = str.split("[/]");
-                    s[0] = s[0].substring(0, s[0].length() - 1);
-                    s[1] = s[1].substring(1, s[1].length());
-                    SzsdBook bookInfo = new SzsdBook();
-                    bookInfo.setBookName(s[0]);
-                    bookInfo.setAuthorName(s[1]);
-                    bookInfo.setBorrowDate(elements1.get(2).text());
-                    bookInfo.setReturnDate(elements1.get(3).text());
-
-                    element = elements1.get(7);
-                    elements1 = element.getElementsByTag("input");
-                    element = elements1.get(0);
-                    str = element.toString();
-                    str = str.substring(str.indexOf("(") + 1, str.indexOf(")"));
-                    str = str.replace("'", "");
-                    String[] strs = str.split("[,]");
-
-                    bookInfo.setBarCode(strs[0]);
-                    bookInfo.setCheckNum(strs[1]);
-                    bookInfoList.add(bookInfo);
-                }
-            }
-            return bookInfoList;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    public static InputStream getLibCaptcha(String libCookie) {
-        try {
-            URL url = new URL("http://211.87.177.4/reader/captcha.php");
-            HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-            httpURLConnection.setRequestMethod("GET");
-            httpURLConnection.setRequestProperty("Cookie", libCookie);
-            httpURLConnection.setInstanceFollowRedirects(false);
-            httpURLConnection.setDoInput(true);
-            httpURLConnection.connect();
-
-            return httpURLConnection.getInputStream();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    public static String renewBook(String barCode, String check, String captcha, String cookie) {
-        try {
-            String borrowURL = "http://211.87.177.4/reader/ajax_renew.php?"
-                    + "bar_code=" + barCode
-                    + "&check=" + check
-                    + "&captcha=" + captcha;
-            URL url = new URL(borrowURL);
-            HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-            httpURLConnection.setRequestMethod("GET");
-            httpURLConnection.setRequestProperty("Cookie", cookie);
-            httpURLConnection.setDoInput(true);
-            httpURLConnection.connect();
-            InputStream inputStream = new BufferedInputStream(httpURLConnection.getInputStream());
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
-            Scanner scanner = new Scanner(bufferedReader);
-            StringBuilder stringBuilder = new StringBuilder();
-            while (scanner.hasNextLine()) {
-                stringBuilder.append(scanner.nextLine()).append("\n");
-            }
-            String res = stringBuilder.toString();
-            if (res.contains("错误的验证码")) {
-                return "错误的验证码";
-            }
-            res = res.substring(res.indexOf(">") + 1, res.indexOf("</"));
-            scanner.close();
-            bufferedReader.close();
-            inputStream.close();
-            httpURLConnection.disconnect();
-            return res;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-
-    }
-
-    public static Boolean checkSzsdCookie(String szsdCookie) throws Exception {
-        URL url = new URL("https://i.upc.edu.cn/dcp/sso/sso.action");
-        HttpsURLConnection
-                httpsURLConnection = (HttpsURLConnection) url.openConnection();
-        httpsURLConnection.setRequestMethod("POST");
-        httpsURLConnection.setUseCaches(false);
-        httpsURLConnection.setInstanceFollowRedirects(false);
-        httpsURLConnection.setRequestProperty("Cookie", szsdCookie);
-        httpsURLConnection.setRequestProperty("render", "json");
-        httpsURLConnection.setRequestProperty("clientType", "json");
-        httpsURLConnection.setRequestProperty("Content-Type", "application/json");
-        httpsURLConnection.setDoOutput(true);
-        httpsURLConnection.setDoInput(true);
-        httpsURLConnection.connect();
-        String content = "{\"map\":{\"method\":\"getSsoDetailInfo\",\"params\":null},\"javaClass\":\"java.util.HashMap\"}";
-        DataOutputStream dos = new DataOutputStream(httpsURLConnection.getOutputStream());
-        dos.writeBytes(content);
-        dos.flush();
-        dos.close();
-        StringBuilder stringBuilder = new StringBuilder();
-        InputStream inputStream = new BufferedInputStream(httpsURLConnection.getInputStream());
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
-        Scanner scanner = new Scanner(bufferedReader);
-        while (scanner.hasNextLine()) {
-            stringBuilder.append(scanner.nextLine()).append("\n");
-        }
-        inputStream.close();
-        httpsURLConnection.disconnect();
-        return !stringBuilder.toString().contains("https://cas.upc.edu.cn/cas/login");
-    }
-
-    public static ClassRoom getCurrentClassRoom() {
-        try {
-            String roomStr = IOUtils.toString(new URL("https://pws.upc.edu.cn/main.asmx/SearchClass_Room_Now"), UTF_8);
-            return SzsdUtils.getClassRoomFromStr(roomStr);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    public static ClassRoom getAvailableClassroom(String week, String day, String n) {
-        try {
-            String roomStr = IOUtils.toString(new URL("https://pws.upc.edu.cn/main.asmx/SearchClassRoom_FromWeek_Day_Lesson?week=" + week + "&day=" + day + "&n=" + n), UTF_8);
-            return SzsdUtils.getClassRoomFromStr(roomStr);
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    private static ClassRoom getClassRoomFromStr(String content) {
-        content = content.replace(",", "，");
-        ClassRoom classRoom = new ClassRoom();
-        if (content.contains("所有教室当前均无课")) {
-            classRoom.setNj("均可自习");
-            classRoom.setNt("均可自习");
-            classRoom.setDh("均可自习");
-            classRoom.setDl("均可自习");
-            classRoom.setXh("均可自习");
-            classRoom.setXl("均可自习");
-        } else {
-            classRoom.setNj(content.substring(content.indexOf("南教空闲：") + 6, content.indexOf("南堂空闲：") - 3));
-            classRoom.setNt(content.substring(content.indexOf("南堂空闲：") + 6, content.indexOf("东环空闲：") - 3));
-            classRoom.setDh(content.substring(content.indexOf("东环空闲：") + 6, content.indexOf("西环空闲：") - 3));
-            classRoom.setDl(content.substring(content.indexOf("西环空闲：") + 6, content.indexOf("东廊空闲：") - 3));
-            classRoom.setXh(content.substring(content.indexOf("东廊空闲：") + 6, content.indexOf("西廊空闲：") - 3));
-            classRoom.setXl(content.substring(content.indexOf("西廊空闲：") + 6, content.indexOf("</string>") - 1));
-        }
-        return classRoom;
-    }
-
     private static String getMD5(String target) {
         byte[] hash;
         try {

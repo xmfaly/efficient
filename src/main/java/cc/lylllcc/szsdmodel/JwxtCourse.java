@@ -12,32 +12,20 @@ import java.util.Set;
  */
 @Data
 public class JwxtCourse implements Serializable {
-    private String courseName;
-    private String classRoom;
-    private String teacherName;
-    private int day;//周日到周六 0-6
-    private int beginLesson;//开始节数
-    private int endLesson; //结束节数
-    private int beginWeek; //开始周数
-    private int endWeek; //结束周数
-    private int courseType; //1单周，2双周,3有特殊周
-    private Set<Integer> expected;
+    private String name;
+    private String classroom;
+    private String teacher;
+    private int dayOfWeek;//周日到周六 0-6
+    private int timeStart;//开始节数
+    private int timeEnd; //结束节数
+    private int weekStart; //开始周数
+    private int weekEnd; //结束周数
 
-    public JwxtCourse() {
-        this(null);
+    public JwxtCourse(){
+
+    }
+    public JwxtCourse(String name){
+        this.name = name;
     }
 
-    @SuppressWarnings("unchecked")
-    public JwxtCourse(String courseName) {
-        this.courseName = courseName;
-        this.expected = new HashSet();
-    }
-
-    public void addWeek(int week) {
-        this.expected.add(week);
-    }
-
-    public boolean isThisWeek(int week) {
-        return this.expected.contains(week);
-    }
 }
