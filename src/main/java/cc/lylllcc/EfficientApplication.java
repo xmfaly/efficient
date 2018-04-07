@@ -11,12 +11,10 @@ public class EfficientApplication {
 
 
     public static void main(String[] args) {
-
         SpringApplication.run(EfficientApplication.class, args);
-        System.setProperty("http.proxyHost", ProxyConfig.proxyHost);
-        System.setProperty("http.proxyPort", ProxyConfig.proxyPort);
-        System.setProperty("https.proxyHost", ProxyConfig.proxyHost);
-        System.setProperty("https.proxyPort", ProxyConfig.proxyPort);
-
+//        System.setProperty("http.proxyHost", ProxyConfig.proxyHost);
+//        System.setProperty("http.proxyPort", ProxyConfig.proxyPort);
+//        System.setProperty("https.proxyHost", ProxyConfig.proxyHost);
+//        System.setProperty("https.proxyPort", ProxyConfig.proxyPort);
     }
 }

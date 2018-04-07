@@ -7,7 +7,7 @@ PROJ_NAME=effcient
 # 服务器用户名
 SERVER_NAME=root
 # 服务器地址
-SERVER_HOST=120.78.149.248
+SERVER_HOST=211.87.178.170
 # 部署端口
 DEPLOY_PORT=8082
 
