@@ -27,7 +27,7 @@ public class StuController {
         return mockService.mockclass();
     }
 
-    @GetMapping("/getCourse")
+    @GetMapping("/course")
     public Object getCourse(String username) throws Exception {
         return xzsdService.getCourseInfo(username);
     }
