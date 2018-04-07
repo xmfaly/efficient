@@ -32,15 +32,12 @@ public class XzsdService {
             return new JsonMes(2,"没有绑定数字石大");
         }
         try {
-
-
             String szsdCookie = SzsdUtils.getSzsdCookie(stuid,stdpwd);
             String jwxtCookie = SzsdUtils.getJwxtCookie(szsdCookie);
             List<JwxtCourse> courseInfo =  SzsdUtils.getCourseInfo("","",jwxtCookie);
-
-
-            
             Map<String,Object> map = new HashMap<>();
+
+            //f
             map.put("code",0);
             map.put("message","操作成功");
             map.put("data",courseInfo);
@@ -63,12 +60,9 @@ public class XzsdService {
             return new JsonMes(2,"没有绑定数字石大");
         }
         try {
-
-
             String szsdCookie = SzsdUtils.getSzsdCookie(stuid,stdpwd);
             String jwxtCookie = SzsdUtils.getJwxtCookie(szsdCookie);
             List<JwxtScore> scores =  SzsdUtils.getScore("",jwxtCookie);
-
             Map<String,Object> map = new HashMap<>();
             map.put("code",0);
             map.put("message","操作成功");
