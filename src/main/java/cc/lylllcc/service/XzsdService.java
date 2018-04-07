@@ -20,7 +20,7 @@ public class XzsdService {
     private UserRepository userRepository;
 
 
-    public Object getCourseInfo(String username) throws Exception {
+    public Object getCourseInfo(String username) {
         User user = userRepository.findFirstByUsername(username);
         if(user == null){
             return new JsonMes(1,"用户不存在");
@@ -39,7 +39,7 @@ public class XzsdService {
 
             //f
             map.put("code",0);
-            map.put("message","操作成功");
+            map.put("message","success");
             map.put("data",courseInfo);
             return map;
         }catch (Exception e){
@@ -48,7 +48,7 @@ public class XzsdService {
 
     }
 
-    public Object getScore(String username) throws Exception {
+    public Object getScore(String username) {
         User user = userRepository.findFirstByUsername(username);
         if(user == null){
             return new JsonMes(1,"用户不存在");
@@ -65,7 +65,7 @@ public class XzsdService {
             List<JwxtScore> scores =  SzsdUtils.getScore("",jwxtCookie);
             Map<String,Object> map = new HashMap<>();
             map.put("code",0);
-            map.put("message","操作成功");
+            map.put("message","success");
             map.put("data",scores);
             return map;
         }catch (Exception e){

@@ -18,7 +18,7 @@ public class StuController {
 
 
     @GetMapping("/grade")
-    public Object grade(String username) throws Exception {
+    public Object grade(String username)  {
         return xzsdService.getScore(username);
     }
 
@@ -28,7 +28,7 @@ public class StuController {
     }
 
     @GetMapping("/course")
-    public Object getCourse(String username) throws Exception {
+    public Object getCourse(String username)  {
         return xzsdService.getCourseInfo(username);
     }
 }
