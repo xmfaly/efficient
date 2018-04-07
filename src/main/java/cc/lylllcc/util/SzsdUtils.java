@@ -415,7 +415,7 @@ public class SzsdUtils {
                             //添加成绩详细查询链接
                             String herf = temp.childNode(0).attr("onclick");
                             herf = herf.substring(herf.indexOf("'") + 1, herf.indexOf(",") - 1);
-                            score.setDetailUrl(herf);
+                            //score.setDetailUrl(herf);
                             temp = elem.select("td").get(8);
                             score.setCourseKind(temp.text());
                             temp = elem.select("td").get(10);
@@ -448,7 +448,7 @@ public class SzsdUtils {
                                 if (herf.length() > 0) {
                                     herf = herf.substring(herf.indexOf("'") + 1, herf.indexOf(",") - 1);
                                     if (!herf.contains("null")) {
-                                        score.setDetailUrl(herf);
+                                        //score.setDetailUrl(herf);
                                     }
                                 }
                                 temp = elem.select("td").get(8);
